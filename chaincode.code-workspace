@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "chaincode"
+		},
+		{
+			"path": "application-restapi"
+		}
+	]
+}

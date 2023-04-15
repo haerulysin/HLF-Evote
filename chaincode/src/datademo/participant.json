@@ -1,0 +1,68 @@
+[
+    {
+      "voterID": 9620548430,
+      "voterRegisterID": 6223535602,
+      "voterName": "Hallie",
+      "type": "participant"
+    },
+    {
+      "voterID": 1875595952,
+      "voterRegisterID": 6634926993,
+      "voterName": "Paula",
+      "type": "participant"
+    },
+    {
+      "voterID": 4820170061,
+      "voterRegisterID": 6758383646,
+      "voterName": "Hurley",
+      "type": "participant"
+    },
+    {
+      "voterID": 1041505748,
+      "voterRegisterID": 6786096884,
+      "voterName": "Farley",
+      "type": "participant"
+    },
+    {
+      "voterID": 2039492347,
+      "voterRegisterID": 9567555220,
+      "voterName": "Allen",
+      "type": "participant"
+    },
+    {
+      "voterID": 9139431462,
+      "voterRegisterID": 9752861227,
+      "voterName": "Marquez",
+      "type": "participant"
+    },
+    {
+      "voterID": 2800031882,
+      "voterRegisterID": 3559360493,
+      "voterName": "Sheila",
+      "type": "participant"
+    },
+    {
+      "voterID": 2518327741,
+      "voterRegisterID": 8666435267,
+      "voterName": "May",
+      "type": "participant"
+    },
+    {
+      "voterID": 9943790100,
+      "voterRegisterID": 7412951004,
+      "voterName": "Kristy",
+      "type": "participant"
+    },
+    {
+      "voterID": 3774165842,
+      "voterRegisterID": 5982540944,
+      "voterName": "Henry",
+      "type": "participant"
+    },
+    {
+      "voterID": 9709947709,
+      "voterRegisterID": 1885054138,
+      "voterName": "Lee",
+      "type": "participant"
+    }
+  ]

@@ -2,7 +2,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export { Chaincode } from './chaincode';
-import { Chaincode } from './chaincode';
+export { EvoteContract } from './evoteContract';
 
-export const contracts:any[] = [Chaincode];
+import { EvoteContract } from './evoteContract';
+
+
+export const contracts:any[] = [EvoteContract];

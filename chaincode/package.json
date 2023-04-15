@@ -1,5 +1,5 @@
 {
-  "name": "evote",
+  "name": "evote-contract",
   "version": "0.0.1",
   "description": "Electronic Voting Contract",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "npm": ">=5"
   },
   "scripts": {
-    "ccstart" : "npx tsc && CORE_CHAINCODE_LOGLEVEL=debug CORE_PEER_TLS_ENABLES=false CORE_CHAINCODE_ID_NAME=mycc:1.0 ./node_modules/.bin/fabric-chaincode-node start --peer.address 127.0.0.1:7052",
+    "cc": "tsc && CORE_CHAINCODE_LOGLEVEL=debug CORE_PEER_TLS_ENABLES=false CORE_CHAINCODE_ID_NAME=mycc:1.0 ./node_modules/.bin/fabric-chaincode-node start --peer.address 127.0.0.1:7052",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "pretest": "npm run lint",
     "test": "nyc mocha -r ts-node/register src/**/*.spec.ts",
