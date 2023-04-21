@@ -1,0 +1,135 @@
+{
+    "$schema": "https://hyperledger.github.io/fabric-chaincode-node/main/api/contract-schema.json",
+    "contracts": {
+        "Electronic Voting Contract": {
+            "name": "Electronic Voting Contract",
+            "contractInstance": {
+                "name": "Electronic Voting Contract",
+                "default": true
+            },
+            "transactions": [
+                {
+                    "tag": [
+                        "SUBMIT",
+                        "submitTx"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "participantList",
+                            "description": "",
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "name": "Init"
+                },
+                {
+                    "tag": [
+                        "SUBMIT",
+                        "submitTx"
+                    ],
+                    "parameters": [],
+                    "name": "InitDemo"
+                },
+                {
+                    "tag": [
+                        "SUBMIT",
+                        "submitTx"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "ballotID",
+                            "description": "",
+                            "schema": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "name": "pickedID",
+                            "description": "",
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "name": "castVote"
+                },
+                {
+                    "tag": [
+                        "EVALUATE"
+                    ],
+                    "parameters": [],
+                    "name": "GetAllAsset"
+                },
+                {
+                    "tag": [
+                        "EVALUATE"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "assetID",
+                            "description": "",
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "name": "ReadAsset"
+                },
+                {
+                    "tag": [
+                        "SUBMIT",
+                        "submitTx"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "docType",
+                            "description": "",
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    ],
+                    "name": "GetByDocType"
+                },
+                {
+                    "tag": [
+                        "SUBMIT",
+                        "submitTx"
+                    ],
+                    "parameters": [],
+                    "name": "DeleteAllAsset"
+                }
+            ],
+            "info": {
+                "title": "evoteContract",
+                "description": "Smart Contract for Electronic voting system",
+                "name": "EvoteContract",
+                "version": ""
+            }
+        },
+        "org.hyperledger.fabric": {
+            "name": "org.hyperledger.fabric",
+            "contractInstance": {
+                "name": "org.hyperledger.fabric"
+            },
+            "transactions": [
+                {
+                    "name": "GetMetadata"
+                }
+            ],
+            "info": {
+                "title": "",
+                "version": ""
+            }
+        }
+    },
+    "info": {
+        "version": "0.0.1",
+        "title": "evote-contract"
+    },
+    "components": {
+        "schemas": {}
+    }
+}

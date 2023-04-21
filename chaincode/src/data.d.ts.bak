@@ -1,0 +1,83 @@
+import { Object as DatadocType, Property } from 'fabric-contract-api';
+
+@DatadocType()
+export class Participant {
+    @Property('voterID','string')
+    public voterID: number;
+
+    @Property()
+    public voterRegisterID: number;
+
+    @Property()
+    public voterName: string;
+
+    @Property()
+    public electionID?: string;
+
+    @Property()
+    public docType?: string = "Participant";
+}
+
+export class Election {
+    @Property()
+    public electionID: string;
+
+    @Property()
+    public electionName: string;
+
+    @Property()
+    public electionLocation: string;
+
+    @Property()
+    public electionDate: string;
+
+    @Property()
+    public electionShowResult: Boolean;
+
+    @Property()
+    public docType?: string = 'Election';
+}
+
+export class Ballot {
+    @Property()
+    public ballotID: string;
+
+    @Property()
+    public electionID: string;
+
+    @Property()
+    public ballotVotableItem: any[];
+
+    @Property()
+    public pick?: string;
+
+    @Property()
+    public isCasted: boolean;
+
+    @Property()
+    public isDeleted: boolean;
+
+    @Property()
+    public docType?: string = "Ballot";
+}
+
+export class Candidates {
+    @Property()
+    public candidatesID: string;
+
+    @Property()
+    public candidatesName: string;
+
+    @Property()
+    public candidatesDescription: string;
+
+    @Property()
+    public docType?: string = "Candidates";
+}
+
+@Object()
+export class AssetTest {
+    constructor() { }
+    @Property('id', 'string')
+    public id: string;
+}

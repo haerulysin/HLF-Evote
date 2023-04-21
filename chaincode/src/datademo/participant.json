@@ -1,68 +1,80 @@
 [
     {
-      "voterID": 9620548430,
-      "voterRegisterID": 6223535602,
-      "voterName": "Hallie",
-      "type": "participant"
+        "voterID": 2662956600,
+        "voterRegisterID": 2063523457,
+        "voterName": "Mccoy",
+        "docType": "Participant"
     },
     {
-      "voterID": 1875595952,
-      "voterRegisterID": 6634926993,
-      "voterName": "Paula",
-      "type": "participant"
+        "voterID": 7828027843,
+        "voterRegisterID": 2157445098,
+        "voterName": "Elsie",
+        "docType": "Participant"
     },
     {
-      "voterID": 4820170061,
-      "voterRegisterID": 6758383646,
-      "voterName": "Hurley",
-      "type": "participant"
+        "voterID": 5195867936,
+        "voterRegisterID": 1017945581,
+        "voterName": "Bobbi",
+        "docType": "Participant"
     },
     {
-      "voterID": 1041505748,
-      "voterRegisterID": 6786096884,
-      "voterName": "Farley",
-      "type": "participant"
+        "voterID": 9569393500,
+        "voterRegisterID": 6613822934,
+        "voterName": "Molly",
+        "docType": "Participant"
     },
     {
-      "voterID": 2039492347,
-      "voterRegisterID": 9567555220,
-      "voterName": "Allen",
-      "type": "participant"
+        "voterID": 1811861670,
+        "voterRegisterID": 5745640948,
+        "voterName": "Jacobs",
+        "docType": "Participant"
     },
     {
-      "voterID": 9139431462,
-      "voterRegisterID": 9752861227,
-      "voterName": "Marquez",
-      "type": "participant"
+        "voterID": 1323232399,
+        "voterRegisterID": 5012592842,
+        "voterName": "Gray",
+        "docType": "Participant"
     },
     {
-      "voterID": 2800031882,
-      "voterRegisterID": 3559360493,
-      "voterName": "Sheila",
-      "type": "participant"
+        "voterID": 1356700396,
+        "voterRegisterID": 1513523539,
+        "voterName": "Florine",
+        "docType": "Participant"
     },
     {
-      "voterID": 2518327741,
-      "voterRegisterID": 8666435267,
-      "voterName": "May",
-      "type": "participant"
+        "voterID": 9833793033,
+        "voterRegisterID": 9216225292,
+        "voterName": "Griffith",
+        "docType": "Participant"
     },
     {
-      "voterID": 9943790100,
-      "voterRegisterID": 7412951004,
-      "voterName": "Kristy",
-      "type": "participant"
+        "voterID": 9472118425,
+        "voterRegisterID": 4006428045,
+        "voterName": "Vickie",
+        "docType": "Participant"
     },
     {
-      "voterID": 3774165842,
-      "voterRegisterID": 5982540944,
-      "voterName": "Henry",
-      "type": "participant"
+        "voterID": 8070257784,
+        "voterRegisterID": 1972371233,
+        "voterName": "Clark",
+        "docType": "Participant"
     },
     {
-      "voterID": 9709947709,
-      "voterRegisterID": 1885054138,
-      "voterName": "Lee",
-      "type": "participant"
+        "voterID": 2074322126,
+        "voterRegisterID": 4802027774,
+        "voterName": "Meadows",
+        "docType": "Participant"
+    },
+    {
+        "voterID": 8105229751,
+        "voterRegisterID": 8942687881,
+        "voterName": "Wilson",
+        "docType": "Participant"
+    },
+    {
+        "voterID": 7490400399,
+        "voterRegisterID": 8961159669,
+        "voterName": "Rowe",
+        "docType": "Participant"
     }
-  ]
+]

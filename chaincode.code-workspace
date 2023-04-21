@@ -4,7 +4,10 @@
 			"path": "chaincode"
 		},
 		{
-			"path": "application-restapi"
+			"path": "application-ts-gateway"
+		},
+		{
+			"path": "application-ts-sdk"
 		}
 	]
 }

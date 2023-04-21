@@ -20,7 +20,7 @@ PeerOrgs:
        Country: ID
        Province: Central Java
        Locality: Banyumas
-      #  OrganizationalUnit: Hyperledger Fabric
+       OrganizationalUnit: Hyperledger Fabric
     #    StreetAddress: address for org # default nil
     #    PostalCode: postalCode for org # default nil
 

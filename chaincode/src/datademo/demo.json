@@ -1,0 +1,22 @@
+{
+    "election": {
+        "electionName": "Judge Civil District Court, Division B",
+        "electionLocation" : "Banyumas, ID",
+        "electionDate": "2023-04-16T09:30:39.918Z 2023-04-17T09:30:39.918Z",
+        "electionShowResult" : true,
+        "docType": "Election"
+    },
+
+    "Candidates": [
+        {
+            "candidatesName": "Katelyn Eaton",
+            "candidatesDescription": "We asked the candidate some general information questions, such as campaign details and important source links. Unfortunately, the candidate has not answered at this time.",
+            "docType": "Candidate"
+        },
+        {
+            "candidatesName": "Ashwin Shepard",
+            "candidatesDescription": "We asked the candidate some general information questions, such as campaign details and important source links. Unfortunately, the candidate has not answered at this time.",
+            "docType": "Candidate"
+        }
+    ]
+}

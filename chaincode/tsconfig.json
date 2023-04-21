@@ -1,18 +1,20 @@
 {
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "@tsconfig/node16/tsconfig.json",
     "compilerOptions": {
+        "experimentalDecorators": true,
+        // "target": "esnext",
+        "emitDecoratorMetadata": true,
         "outDir": "dist",
-        "target": "es2017",
-        "moduleResolution": "node",
-        "module": "commonjs",
         "declaration": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
         "sourceMap": true,
-        "skipLibCheck": true,
-        "experimentalDecorators": true
+        // "noUnusedLocals": true,
+        // "noImplicitReturns": true,
+        "resolveJsonModule": true
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "./src/**/*.d.ts"
     ],
     "exclude": [
         "./src/**/*.spec.ts"
