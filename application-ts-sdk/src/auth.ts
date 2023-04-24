@@ -4,14 +4,18 @@ import passport from "passport";
 import { getReasonPhrase } from "http-status-codes";
 import { HeaderAPIKeyStrategy } from "passport-headerapikey";
 
-
-export const fabricAPIKeyStrategy: HeaderAPIKeyStrategy = new HeaderAPIKeyStrategy(
-    {header: 'x-api-key',prefix:''},
-    true,
-    function(apiKey,done,req:Request){
-        done(null,false)
+export const fabricAPIKeyStrategy: HeaderAPIKeyStrategy =
+  new HeaderAPIKeyStrategy({ header: "x-api-key", prefix: "" }, true, function (
+    apiKey: string,
+    done,
+    req: Request
+  ) {
+    if(!req.app.locals[`${apiKey}_Contract`]){
+      return done(null,false);
+    }else{
+      return done(null, apiKey);
     }
-)
+  });
 
 export const authAPIKey = (
   req: Request,
@@ -22,7 +26,6 @@ export const authAPIKey = (
     "headerapikey",
     { session: false },
     (err, user, _info) => {
-        console.log(req.locals)
       if (err) return next(err);
       if (!user)
         return res.status(401).json({
@@ -30,7 +33,7 @@ export const authAPIKey = (
           reason: "NOT_AUTHENTICATED",
           timestamp: new Date().toISOString(),
         });
-
+        
       req.logIn(user, { session: false }, async (err) => {
         if (err) {
           return next(err);

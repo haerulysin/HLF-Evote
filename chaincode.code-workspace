@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "application-ts-sdk"
+		},
+		{
+			"path": "../openapidocs"
 		}
 	]
 }

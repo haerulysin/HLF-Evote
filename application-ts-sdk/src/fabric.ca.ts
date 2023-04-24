@@ -16,6 +16,7 @@ function caConnect() {
   return caClient;
 }
 
+
 export async function registerUser(): Promise<any> {
   // const adminIdentity = await wallet.get(adminID);
   // if(!adminIdentity){
