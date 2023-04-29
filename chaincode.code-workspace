@@ -7,13 +7,13 @@
 			"path": "application-ts-gateway"
 		},
 		{
-			"path": "application-ts-sdk"
-		},
-		{
 			"path": "../openapidocs"
 		},
 		{
 			"path": "application-test"
+		},
+		{
+			"path": "rest-api-ts"
 		}
 	]
 }
