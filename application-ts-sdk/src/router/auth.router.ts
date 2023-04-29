@@ -60,21 +60,6 @@ authRouter.post(
     }
     try {
       const { uid, wallet } = await createWallet(publicCertPem, prvKey);
-
-      // const certificate = Buffer.from(publicCertPem, "base64").toString(
-      //   "ascii"
-      // );
-      // const privateKey = Buffer.from(prvKey, "base64").toString("ascii");
-      // const wallet = {
-      //   credentials: {
-      //     certificate,
-      //     privateKey,
-      //   },
-      //   type: "X.509",
-      //   mspId: "SampleOrg",
-      // };
-      // const uid = createHash('sha256').update(JSON.stringify(wallet)).digest('hex')
-
       const gw = await createGateway(wallet, uid);
       const nw = await getNetwork(gw);
       const cc = await GetContract(nw);
@@ -96,7 +81,11 @@ authRouter.post(
 
 authRouter.post("/register", async (req: Request, res: Response) => {
   //ENROLL REGISTERED IDENTITIES
-  const data = req.body;
+  const data = {
+    ...req.body,
+    docType: "Participant",
+  };
+
   const datahash = createHash("sha256")
     .update(JSON.stringify(data))
     .digest("hex");

@@ -37,7 +37,7 @@ export const createWallet = async (
 };
 
 export const createGateway = async (
-  wallet: any|Wallet,
+  wallet: any | Wallet,
   identity: string
 ): Promise<Gateway> => {
   const ccp: Record<string, unknown> = require("./connection/ccp.json");
@@ -46,7 +46,7 @@ export const createGateway = async (
   const gatewayOpts: GatewayOptions = {
     wallet,
     identity,
-    discovery: { enabled: true, asLocalhost: true },
+    discovery: { enabled: false, asLocalhost: true },
     eventHandlerOptions: {
       commitTimeout: 300,
       endorseTimeout: 30,
@@ -90,17 +90,18 @@ export async function evaluateTransaction(
 }
 
 export async function submitTransaction(
-  contract: Contract,
   transaction: Transaction,
   ...transactionArgs: string[]
-): Promise<Buffer> {
+): Promise<any> {
   const txid = transaction.getTransactionId();
   try {
-    return await transaction.submit(...transactionArgs);
+    const payload = await transaction.submit(...transactionArgs);
+    return payload;
   } catch (err) {
     throw handleError(txid, err);
   }
 }
+
 
 export const getTransactionValidationCode = async (
   qsccContract: Contract,

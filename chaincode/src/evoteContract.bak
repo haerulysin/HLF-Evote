@@ -6,13 +6,14 @@ import {
     Returns,
     Transaction,
 } from "fabric-contract-api";
-import { Ballot, Election, Participant, Candidates } from "./data";
+import { Ballot, Election, Participant, Candidates, CCResponse } from "./data";
 import { createHash } from "crypto";
 import demoDataJson from "./datademo/demo.json";
 import participantDataJson from "./datademo/participant.json";
 import stringify from "json-stringify-deterministic";
 import sortKeysRecursive from "sort-keys-recursive";
 import { TextDecoder } from "util";
+
 const utf8Decoder = new TextDecoder();
 const adminOU = "admin";
 
@@ -135,12 +136,13 @@ export class EvoteContract extends Contract {
 
     @Param("pickedID", "string")
     @Param("electionID", "string")
-    @Transaction(true)
+    @Transaction()
     public async castVote(
         ctx: Context,
         pickedID: string,
         electionID: string
-    ): Promise<any> {
+    ): Promise<string> {
+        let response: CCResponse = {};
         const [OU, CN] = await this._getMemberDetail(ctx);
         const ballotIDpreHash = {
             participantHash: CN,
@@ -152,15 +154,21 @@ export class EvoteContract extends Contract {
         );
 
         if (!(await this._assetExist(ctx, ballotID))) {
-            throw new Error(`Ballot doesnt exist`);
+            response.status = 404;
+            response.error = "Ballot doesnt exist";
+            return JSON.stringify(response);
         }
 
         if (!(await this._assetExist(ctx, pickedID))) {
-            throw new Error(`Candidates ${pickedID} doesnt exist`);
+            response.status = 404;
+            response.error = `Candidates ${pickedID} doesnt exist`;
+            return JSON.stringify(response);
         }
 
         if (!(await this._assetExist(ctx, electionID))) {
-            throw new Error(`Election ${electionID} doesnt exist`);
+            response.status = 404;
+            response.error = `Election ${electionID} doesnt exist`;
+            return JSON.stringify(response);
         }
 
         const ballotjson = this.unmarshal(await ctx.stub.getState(ballotID));
@@ -171,13 +179,9 @@ export class EvoteContract extends Contract {
             await ctx.stub.getState(ballot.electionID)
         );
         this._checkElections(electionjson);
-        await ctx.stub.putState(ballotID, this.marshal(ballot));
-        await ctx.stub.setEvent("castVote", this.marshal(ballot));
-
-        const response = {
-            status: 200,
-        };
-
+        const res = await ctx.stub.putState(ballotID, this.marshal(ballot));
+        console.log(res);
+        response.status = 200;
         return JSON.stringify(response);
     }
 
@@ -270,13 +274,17 @@ export class EvoteContract extends Contract {
     }
 
     _checkBallot(ballot: Ballot) {
+        let responses:CCResponse = {};
         if (ballot.isCasted || ballot.pick) {
-            throw new Error(`Ballot ${ballot.ballotID} was casted`);
+            responses.status = 400;
+            responses.error = `Ballot ${ballot.ballotID} was casted`;
         }
 
         if (ballot.isDeleted) {
-            throw new Error(`Ballot ${ballot.ballotID} was deleted`);
+            responses.status = 400;
+            responses.error = `Ballot ${ballot.ballotID} was deleted`;
         }
+        return responses;
     }
 
     _checkElections(election: Election) {

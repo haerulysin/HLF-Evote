@@ -5,8 +5,8 @@
   "main": "index.ts",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev ./src/index.ts"
+    "dev": "ts-node-dev ./src/index.ts",
+    "test": "ts-node-dev ./src/util/redis.ts"
   },
   "author": "Muh Khaerul",
   "license": "ISC",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@tsconfig/node16": "^1.0.3",
     "body-parser": "^1.20.1",
+    "bullmq": "^3.12.0",
     "connect-redis": "^7.0.1",
     "dotenv": "^16.0.3",
     "env-var": "^7.3.0",

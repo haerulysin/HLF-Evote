@@ -1,24 +1,4 @@
-class Animal{
-    name:string;
-    constructor(name:string){
-        this.name = name;
-    }
-}
+const message = "No valid responses from any peers. Errors:    peer=localhost, status=500, message=Assets defbda1533569d2127df931c5e417c55974ac6ee028927ace840896b5f0e7593 doenst exist";
+const errMsg = message.match(/(message=)(.*)/)![2]
 
-
-class Dog extends Animal{
-    age:number;
-    constructor(name:string,age:number){
-        super(name);
-        this.age = age;
-    }
-}
-
-function main(){
-
-    const animal = new Dog("Anjing",33);
-    return animal;
-}
-
-
-console.log(main())
+console.log(errMsg);

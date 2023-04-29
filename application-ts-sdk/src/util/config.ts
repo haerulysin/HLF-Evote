@@ -4,6 +4,7 @@ import * as env from "env-var";
 
 export const ORG: string = env.get("ORG_NAME").default("SampleOrg").asString();
 export const MSPID: string = env.get("MSP_ID").default("SampleOrg").asString();
+export const JOB_QUEUE_NAME = "submitContract";
 
 export const loglevel: string = env
   .get("LOG_LEVEL")
@@ -47,3 +48,59 @@ export const fabricCAHostname: string = env
   .get("HLF_CA_HOSTNAME")
   .default("http://localhost:7054")
   .asString();
+
+//REDIS
+export const redisPort = env.get("REDIS_PORT").default("6379").asPortNumber();
+export const redisHost: string = env
+  .get("REDIS_HOST")
+  .default("localhost")
+  .asString();
+export const redisUsername: string = env
+  .get("REDIS_USERNAME")
+  .default("default")
+  .asString();
+export const redisPassword: string = env
+  .get("REDIS_PASSWORD")
+  .default("12345678")
+  .asString();
+
+export const submitJobBackoffType = env
+  .get("SUBMIT_JOB_BACKOFF_TYPE")
+  .default("fixed")
+  .asEnum(["fixed", "exponential"]);
+
+export const submitJobBackoffDelay = env
+  .get("SUBMIT_JOB_BACKOFF_DELAY")
+  .default("3000")
+  .example("3000")
+  .asIntPositive();
+
+export const submitJobAttempts = env
+  .get("SUBMIT_JOB_ATTEMPTS")
+  .default("5")
+  .example("5")
+  .asIntPositive();
+
+export const submitJobConcurrency = env
+  .get("SUBMIT_JOB_CONCURRENCY")
+  .default("5")
+  .example("5")
+  .asIntPositive();
+
+export const maxCompletedSubmitJobs = env
+  .get("MAX_COMPLETED_SUBMIT_JOBS")
+  .default("1000")
+  .example("1000")
+  .asIntPositive();
+
+export const maxFailedSubmitJobs = env
+  .get("MAX_FAILED_SUBMIT_JOBS")
+  .default("1000")
+  .example("1000")
+  .asIntPositive();
+
+export const submitJobQueueScheduler = env
+  .get("SUBMIT_JOB_QUEUE_SCHEDULER")
+  .default("true")
+  .example("true")
+  .asBoolStrict();

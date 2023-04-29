@@ -18,5 +18,5 @@ NodeOUs:
     OrganizationalUnitIdentifier: "admin"
   OrdererOUIdentifier:
     Certificate: "cacerts/cacert.pem"
-    OrganizationalUnitIdentifier: "orderer"
+    OrganizationalUnitIdentifier: "admin"
 

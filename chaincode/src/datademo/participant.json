@@ -1,80 +1,32 @@
 [
-    {
-        "voterID": 2662956600,
-        "voterRegisterID": 2063523457,
-        "voterName": "Mccoy",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 7828027843,
-        "voterRegisterID": 2157445098,
-        "voterName": "Elsie",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 5195867936,
-        "voterRegisterID": 1017945581,
-        "voterName": "Bobbi",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 9569393500,
-        "voterRegisterID": 6613822934,
-        "voterName": "Molly",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 1811861670,
-        "voterRegisterID": 5745640948,
-        "voterName": "Jacobs",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 1323232399,
-        "voterRegisterID": 5012592842,
-        "voterName": "Gray",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 1356700396,
-        "voterRegisterID": 1513523539,
-        "voterName": "Florine",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 9833793033,
-        "voterRegisterID": 9216225292,
-        "voterName": "Griffith",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 9472118425,
-        "voterRegisterID": 4006428045,
-        "voterName": "Vickie",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 8070257784,
-        "voterRegisterID": 1972371233,
-        "voterName": "Clark",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 2074322126,
-        "voterRegisterID": 4802027774,
-        "voterName": "Meadows",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 8105229751,
-        "voterRegisterID": 8942687881,
-        "voterName": "Wilson",
-        "docType": "Participant"
-    },
-    {
-        "voterID": 7490400399,
-        "voterRegisterID": 8961159669,
-        "voterName": "Rowe",
-        "docType": "Participant"
-    }
+  {
+    "voterID": "4143234751",
+    "voterRegisterID": "7193726672",
+    "voterName": "Gilmore",
+    "docType": "Participant"
+  },
+  {
+    "voterID": "1608369266",
+    "voterRegisterID": "7370445180",
+    "voterName": "Zimmerman",
+    "docType": "Participant"
+  },
+  {
+    "voterID": "2848441556",
+    "voterRegisterID": "3877682522",
+    "voterName": "Thelma",
+    "docType": "Participant"
+  },
+  {
+    "voterID": "4479295207",
+    "voterRegisterID": "8374881400",
+    "voterName": "Felicia",
+    "docType": "Participant"
+  },
+  {
+    "voterID": "8575159495",
+    "voterRegisterID": "5291768107",
+    "voterName": "Magdalena",
+    "docType": "Participant"
+  }
 ]

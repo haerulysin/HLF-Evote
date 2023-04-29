@@ -1,15 +1,17 @@
-const orid =
-    "x509::/C=ID/ST=Central Java/L=Banyumas/O=evote.example.com/OU=admin/OU=evote/CN=admin::/C=ID/ST=Central Java/L=Banyumas/O=evote.example.com/OU=evote/CN=ca.evote.example.com";
-const clientSubject = orid.split("::")[1];
-const issuerSubject: string[] = orid.split("::")[2].split("/");
-let issuerOU!: string;
+import { createHash } from "crypto";
+const userInfo = {
+    "voterID": "4143234751",
+    "voterRegisterID": "7193726672",
+    "voterName": "Gilmore",
+    "docType": "Participant"
+};
+const userInfoHash = createHash('sha256').update(JSON.stringify(userInfo)).digest('hex')
+console.log(userInfoHash);
+const ballotPreHash = {
+    participantHash: userInfoHash,
+    electionID: 'f8f0c97394ea4399aa98b10ffec5dfd5a4d5c5f5dbfce7f64a1d6469f1e0ebd9'
+}
 
-issuerSubject.forEach(r => {
-    const sKey = r.split("=");
-    if (sKey[0] == "OU"){
-        issuerOU=sKey[1];
-    }
-    
-});
+const ballotHash = createHash('sha256').update(JSON.stringify(ballotPreHash)).digest('hex');
 
-console.log(issuerOU);
+console.log(ballotHash)
