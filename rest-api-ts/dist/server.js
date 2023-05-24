@@ -28,33 +28,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createServer = void 0;
 const express_1 = __importDefault(require("express"));
+const bodyParser = __importStar(require("body-parser"));
 const cors = __importStar(require("cors"));
-const helmet_1 = __importDefault(require("helmet"));
 const logger_1 = require("./util/logger");
 const config = __importStar(require("./util/config"));
-const http_status_codes_1 = require("http-status-codes");
-const transaction_router_1 = require("./transaction.router");
-const { OK, SERVICE_UNAVAILABLE } = http_status_codes_1.StatusCodes;
+const router_1 = require("./router/router");
+const passport_1 = __importDefault(require("passport"));
+const auth_1 = require("./auth");
+const redis_1 = require("./util/redis");
 async function createServer() {
     const app = (0, express_1.default)();
-    if (process.env.NODE_ENV === 'development') {
-        app.use(cors());
+    //redisCheckMemory
+    if (!(await (0, redis_1.isMaxmemoryPolicyNoeviction)())) {
+        throw new Error("Invalid redis configuration: redis instance must have the setting maxmemory-policy=noeviction");
     }
-    if (process.env.NODE_ENV === 'production') {
-        app.use((0, helmet_1.default)());
-    }
-    app.get('/', (req, res) => {
-        res.status(OK).json({
-            status: (0, http_status_codes_1.getReasonPhrase)(OK),
-            params: req.params,
-            timestamp: new Date().toISOString
-        });
-    });
-    app.use('/api/transaction', transaction_router_1.txRouter);
-    logger_1.logger.info("Starting RestAPI");
+    // if (process.env.NODE_ENV === "development") {
+    //   app.use(cors());
+    // }
+    // if (process.env.NODE_ENV === "production") {
+    //   // app.use(helmet());
+    // }
+    app.use(cors({
+        allowedHeaders: ["x-api-key", "Content-Type"],
+        exposedHeaders: ["x-api-key"],
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false
+    }));
+    //body-parser
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+    //Passport
+    passport_1.default.use(auth_1.fabricAPIKeyStrategy);
+    app.use(passport_1.default.initialize());
+    app.use("/api/v1", router_1.router);
     app.listen(config.port, () => {
-        logger_1.logger.info(`RestAPI server started on port http://localhost:${config.port}`);
+        logger_1.logger.info(`${process.env.NODE_ENV} - RestAPI server started on port http://localhost:${config.port}/api/v1`);
     });
+    return app;
 }
 exports.createServer = createServer;
 //# sourceMappingURL=server.js.map

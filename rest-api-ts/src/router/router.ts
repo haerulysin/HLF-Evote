@@ -39,3 +39,8 @@ for (const r of routeList) {
   }
   router.use(r.path, authAPIKey, r.route);
 }
+
+router.post("/test", async(req,res) => {
+  console.log(req.body);
+  res.send(req.body)
+})

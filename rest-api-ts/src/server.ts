@@ -1,6 +1,6 @@
 import express, { Application, Express } from "express";
 import * as bodyParser from "body-parser";
-import * as cors from "cors";
+import cors from 'cors';
 import helmet from "helmet";
 import { logger } from "./util/logger";
 import * as config from "./util/config";
@@ -22,13 +22,15 @@ export async function createServer(): Promise<Application> {
     );
   }
 
-  //CORS
-  if (process.env.NODE_ENV === "development") {
-    app.use(cors());
-  }
-  if (process.env.NODE_ENV === "production") {
-    app.use(helmet());
-  }
+
+  // if (process.env.NODE_ENV === "development") {
+  //   app.use(cors());
+  // }
+  // if (process.env.NODE_ENV === "production") {
+  //   // app.use(helmet());
+  // }
+
+  app.use(cors())
 
   //body-parser
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,7 +43,7 @@ export async function createServer(): Promise<Application> {
   app.use("/api/v1", router);
   app.listen(config.port, () => {
     logger.info(
-      `RestAPI server started on port http://localhost:${config.port}/api/v1`
+      `${process.env.NODE_ENV} - RestAPI server started on port http://localhost:${config.port}/api/v1`
     );
   });
 

@@ -102,7 +102,6 @@ export async function submitTransaction(
   }
 }
 
-
 export const getTransactionValidationCode = async (
   qsccContract: Contract,
   txid: string
@@ -127,4 +126,16 @@ export const getBlockHeight = async (
   );
   const info = protos.common.BlockchainInfo.decode(data);
   return info.height;
+};
+
+export const pingChaincode = async (contract: Contract): Promise<boolean> => {
+  try {
+    const resBytes: Buffer = await contract.evaluateTransaction(
+      "org.hyperledger.fabric:GetMetadata"
+    );
+    const resJson = JSON.parse(resBytes.toString());
+    return resJson.contracts;
+  } catch (e) {
+    throw handleError("PING",e);
+  }
 };

@@ -7,8 +7,8 @@ export class Election {
     electionName = "";
     @Property("electionLocation", "string")
     electionLocation = "";
-    @Property("electionDate", "string")
-    electionDate = "";
+    @Property("electionDate", "string[]")
+    electionDate = {from:'',to:''};
     @Property("electionShowResult", "boolean")
     electionShowResult = false;
     @Property("owner", "string")

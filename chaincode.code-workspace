@@ -14,6 +14,12 @@
 		},
 		{
 			"path": "rest-api-ts"
+		},
+		{
+			"path": "../Application/hlvote-admin"
+		},
+		{
+			"path": "../Application/hltest"
 		}
 	]
 }

@@ -281,15 +281,12 @@ export class EvoteContract extends Contract {
 
     _checkElections(election: Election) {
         const currTime = Date.parse(new Date().toString());
-        const electionTime = election.electionDate.split(" ");
-        const startTime = Date.parse(electionTime[0]);
-        const endTime = Date.parse(electionTime[1]);
-
+        const startTime = Date.parse(election.electionDate.from);
+        const endTime = Date.parse(election.electionDate.to);
         if (!(currTime >= startTime && currTime <= endTime)) {
             throw new Error(`The ${election.electionName} not open for now!`);
         }
     }
-
     _toSha256(strval: string | object) {
         if (typeof strval === "object") {
             strval = JSON.stringify(this._toSha256);
