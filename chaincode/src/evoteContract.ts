@@ -32,12 +32,6 @@ export class EvoteContract extends Contract {
         }
         return await ctx.clientIdentity.getID();
     }
-
-    @Transaction()
-    public async InitClient(ctx: Context): Promise<any> {
-        return await ctx.clientIdentity.getID();
-    }
-
     @Transaction()
     public async InitDemo(ctx: Context): Promise<void> {
         if (!(await this._isAdmin(ctx, adminOU))) {
@@ -209,7 +203,7 @@ export class EvoteContract extends Contract {
         return this.unmarshal(await ctx.stub.getState(assetID));
     }
 
-    //helpers
+    //priv function
     async _generateBallot(
         ctx: Context,
         ballotID: string,
@@ -318,6 +312,14 @@ export class EvoteContract extends Contract {
         for await (const res of it) {
             await ctx.stub.deleteState(res.key);
         }
+    }
+
+    @Param('data','string')
+    @Transaction(true)
+    public async Add(ctx: Context, data:string): Promise<string> {
+        const x = data;
+        console.log(x)
+        return "Add";
     }
 
     public async reset(ctx: Context): Promise<void> {
