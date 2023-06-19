@@ -8,7 +8,7 @@ export class Election {
     @Property("electionLocation", "string")
     electionLocation = "";
     @Property("electionDate", "string[]")
-    electionDate = {from:'',to:''};
+    electionDate = { from: "", to: "" };
     @Property("electionShowResult", "boolean")
     electionShowResult = false;
     @Property("owner", "string")
@@ -37,8 +37,8 @@ export class Ballot {
     ballotID = "";
     @Property("electionID", "string")
     electionID = "";
-    @Property("ballotVotableItem", "any[]")
-    ballotVotableItem = {};
+    @Property("owner", "string")
+    owner = "";
     @Property("pick", "string")
     pick? = "";
     @Property("isCasted", "boolean")
@@ -53,18 +53,23 @@ Object();
 export class Candidates {
     @Property("candidatesID", "string")
     candidatesID = "";
+    @Property("electionID", "string")
+    electionID = "";
     @Property("candidatesName", "string")
     candidatesName = "";
     @Property("candidatesDescription", "string")
     candidatesDescription = "";
+    @Property("candidatesPhotoURL", "string")
+    candidatesPhotoURL? =
+        "https://res.cloudinary.com/mdkruls/image/upload/v1683870802/candidatesPhoto/Default_pfp.svg_noyjas.png";
     @Property("docType", "string")
     docType = "Candidates";
 }
 
 Object();
-export class CCResponse{
-    @Property('status','number')
+export class CCResponse {
+    @Property("status", "number")
     status? = 0;
-    @Property('error','string')
-    error? = '';
+    @Property("error", "string")
+    error? = "";
 }

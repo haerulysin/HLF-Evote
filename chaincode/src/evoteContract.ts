@@ -6,7 +6,7 @@ import {
     Returns,
     Transaction,
 } from "fabric-contract-api";
-import { Ballot, Election, Participant, Candidates } from "./data";
+import { Ballot, Election, Participant, Candidates, CCResponse } from "./data";
 import { createHash } from "crypto";
 import demoDataJson from "./datademo/demo.json";
 import participantDataJson from "./datademo/participant.json";
@@ -27,14 +27,105 @@ export class EvoteContract extends Contract {
 
     @Transaction()
     public async Init(ctx: Context): Promise<any> {
-        if (!(await this._isAdmin(ctx, adminOU))) {
+        if (!(await this._isAdmin(ctx))) {
             throw new Error("Need Admin Privilege!");
         }
         return await ctx.clientIdentity.getID();
     }
+
+    @Transaction(false)
+    public async PingContract(ctx: Context): Promise<string> {
+        return ctx.clientIdentity.getID();
+    }
+
+    @Param("rawdata", "string")
+    @Transaction()
+    public async CreateElection(
+        ctx: Context,
+        rawdata: string
+    ): Promise<string> {
+        let resp = {
+            status: 204,
+            message: "",
+        };
+        const data = JSON.parse(rawdata);
+        if (!(await this._isAdmin(ctx))) {
+            throw new Error("Need Admin Privilege");
+        }
+        const electionID = this._toSha256(JSON.stringify(data));
+        data.electionID = electionID;
+        // if (await this._assetExist(ctx, electionID)) {
+        //     throw new Error(`Assets ${data.docType} - ${electionID} is exist`);
+        // }
+        await ctx.stub.putState(electionID, Buffer.from(JSON.stringify(data)));
+        resp.status = 200;
+        resp.message = electionID;
+        return JSON.stringify(resp);
+    }
+
+    @Param("candidatesRaw", "string")
+    @Param("electionID", "string")
+    @Transaction()
+    public async CreateCandidates(
+        ctx: Context,
+        candidatesRaw: string,
+        electionID: string
+    ): Promise<string> {
+        let resp = {
+            status: 204,
+            message: "",
+        };
+
+        let candidateList: Candidates[];
+        for (const cl of JSON.parse(candidatesRaw)) {
+            const candidatesID = this._toSha256(JSON.stringify(cl));
+            const candidates: Candidates = {
+                ...cl,
+                candidatesID,
+                electionID,
+            };
+            await ctx.stub.putState(
+                candidatesID,
+                Buffer.from(JSON.stringify(candidates))
+            );
+        }
+        resp.status = 200;
+        resp.message = "Success";
+        return JSON.stringify(resp);
+    }
+
+    @Param("participantRaw", "string")
+    @Param("electionID", "string")
+    @Transaction()
+    public async CreateBallot(
+        ctx: Context,
+        participantRaw: string,
+        electionID: string
+    ): Promise<string> {
+        let resp = {
+            status: 204,
+            message: "",
+        };
+
+        let participantList = JSON.parse(participantRaw);
+        for (let plist of participantList.data) {
+            const ballotID = this._toSha256(
+                JSON.stringify({
+                    participantHash: plist,
+                    electionID,
+                })
+            );
+            console.log(ballotID);
+            await this._generateBallot(ctx, ballotID, electionID, plist);
+        }
+        resp.status = 200;
+        resp.message = "OK";
+        return JSON.stringify(resp);
+    }
+
     @Transaction()
     public async InitDemo(ctx: Context): Promise<void> {
-        if (!(await this._isAdmin(ctx, adminOU))) {
+        if (!(await this._isAdmin(ctx))) {
             throw new Error("Need Admin Privilege!");
         }
         const electionJSON = demoDataJson.election;
@@ -58,6 +149,7 @@ export class EvoteContract extends Contract {
             }
             const candidatesData: Candidates = {
                 candidatesID: cjID,
+                electionID,
                 ...cjs,
             };
             candidateTemp.push(JSON.parse(JSON.stringify(candidatesData)));
@@ -83,18 +175,13 @@ export class EvoteContract extends Contract {
             };
 
             const ballotIDHash = this._toSha256(JSON.stringify(ballotID));
-            await this._generateBallot(
-                ctx,
-                ballotIDHash,
-                electionID,
-                candidateTemp
-            );
+            await this._generateBallot(ctx, ballotIDHash, electionID, pHash);
         }
     }
 
     @Transaction(false)
     public async GetAllAsset(ctx: Context): Promise<any> {
-        if (!(await this._isAdmin(ctx, adminOU))) {
+        if (!(await this._isAdmin(ctx))) {
             throw new Error("Need Admin Privilege!");
         }
         const allResult = [];
@@ -127,7 +214,15 @@ export class EvoteContract extends Contract {
         return JSON.stringify(assetjson);
     }
 
-    @Param("pickedID", "string")
+    @Param("data", "string")
+    public async AddAsset(ctx: Context, data: string): Promise<string> {
+        if (!(await this._isAdmin(ctx))) {
+            throw new Error("Need Admin Privilege!");
+        }
+        return JSON.stringify("test");
+    }
+
+    @Param("pickedID", "string[]")
     @Param("electionID", "string")
     @Transaction(true)
     public async castVote(
@@ -185,7 +280,7 @@ export class EvoteContract extends Contract {
     @Param("docType", "string")
     @Transaction()
     async GetByDocType(ctx: Context, docType: string): Promise<any> {
-        if (!(await this._isAdmin(ctx, adminOU))) {
+        if (!(await this._isAdmin(ctx))) {
             throw new Error("Need Admin Privilege!");
         }
         let query = { selector: { docType: docType } };
@@ -196,26 +291,26 @@ export class EvoteContract extends Contract {
     @Param("assetID", "string")
     @Transaction()
     async GetAsset(ctx: Context, assetID: string): Promise<string> {
-        if (!(await this._isAdmin(ctx, adminOU))) {
+        if (!(await this._isAdmin(ctx))) {
             throw new Error("Need Admin Privilege!");
         }
 
         return this.unmarshal(await ctx.stub.getState(assetID));
     }
 
-    //priv function
+    //Private
     async _generateBallot(
         ctx: Context,
         ballotID: string,
         electionID: string,
-        ballotVotableItem: any[]
+        owner: string
     ): Promise<void> {
         const ballot: Ballot = {
-            ballotID: ballotID,
-            electionID: electionID,
-            ballotVotableItem: ballotVotableItem,
+            ballotID,
+            electionID,
             isCasted: false,
             isDeleted: false,
+            owner,
             docType: "Ballot",
         };
         if (await this._assetExist(ctx, ballotID)) {
@@ -237,10 +332,10 @@ export class EvoteContract extends Contract {
         return JSON.stringify(allResult);
     }
 
-    async _isAdmin(ctx: Context, orgUnit: string): Promise<boolean> {
+    async _isAdmin(ctx: Context): Promise<boolean> {
         const [OU, CN] = await this._getMemberDetail(ctx);
         // return OU;
-        return orgUnit == OU;
+        return adminOU == OU;
     }
 
     async _checkCertName(ctx: Context, certName: string): Promise<boolean> {
@@ -305,39 +400,12 @@ export class EvoteContract extends Contract {
     //Dev-mode
     @Transaction()
     async DeleteAllAsset(ctx: Context): Promise<void> {
-        if (!(await this._isAdmin(ctx, adminOU))) {
+        if (!(await this._isAdmin(ctx))) {
             throw new Error("Need Admin Privilege!");
         }
         const it = ctx.stub.getStateByRange("", "");
         for await (const res of it) {
             await ctx.stub.deleteState(res.key);
         }
-    }
-
-    @Param('data','string')
-    @Transaction(true)
-    public async Add(ctx: Context, data:string): Promise<string> {
-        const x = data;
-        console.log(x)
-        return "Add";
-    }
-
-    public async reset(ctx: Context): Promise<void> {
-        await this.DeleteAllAsset(ctx);
-        console.log("All Asset Deleted");
-        // await this.DeleteAllPrivateData(ctx);
-        // console.log("All Priv Data Deleted");
-    }
-
-    async DeleteAllPrivateData(ctx: Context): Promise<void> {
-        const it = ctx.stub.getPrivateDataByRange("userDataCollection", "", "");
-        for await (const res of it) {
-            await ctx.stub.deletePrivateData("userDataCollection", res.key);
-        }
-    }
-
-    async GetAllPrivateData(ctx: Context): Promise<string> {
-        const it = ctx.stub.getPrivateDataByRange("userDataCollection", "", "");
-        return this._getResult(it);
     }
 }
