@@ -33,6 +33,62 @@ export class EvoteContract extends Contract {
         return await ctx.clientIdentity.getID();
     }
 
+    @Transaction()
+    public async InitDemo(ctx: Context): Promise<void> {
+        if (!(await this._isAdmin(ctx))) {
+            throw new Error("Need Admin Privilege!");
+        }
+        const electionJSON = demoDataJson.election;
+        const candidateJSON = demoDataJson.Candidates;
+
+        const electionID = this._toSha256(JSON.stringify(electionJSON));
+
+        const electionData: Election = {
+            electionID: electionID,
+            ...electionJSON,
+        };
+
+        //Candidates
+        let candidateTemp: any = [];
+        for (const cjs of candidateJSON) {
+            const cjID = this._toSha256(JSON.stringify(cjs));
+            if (await this._assetExist(ctx, cjID)) {
+                throw new Error(
+                    `Asset ${cjs.docType} - ${cjs.candidatesName} exist`
+                );
+            }
+            const candidatesData: Candidates = {
+                candidatesID: cjID,
+                electionID,
+                ...cjs,
+            };
+            candidateTemp.push(JSON.parse(JSON.stringify(candidatesData)));
+            await ctx.stub.putState(
+                cjID,
+                Buffer.from(JSON.stringify(candidatesData))
+            );
+        }
+
+        //electionPut
+        await ctx.stub.putState(
+            electionData.electionID,
+            Buffer.from(JSON.stringify(electionData))
+        );
+
+        //Generate Ballot
+        const participantList = participantDataJson;
+        for (const pvalue of participantList) {
+            const pHash = this._toSha256(JSON.stringify(pvalue));
+            const ballotID = {
+                participantHash: pHash,
+                electionID,
+            };
+
+            const ballotIDHash = this._toSha256(JSON.stringify(ballotID));
+            await this._generateBallot(ctx, ballotIDHash, electionID, pHash);
+        }
+    }
+
     @Transaction(false)
     public async PingContract(ctx: Context): Promise<string> {
         return ctx.clientIdentity.getID();
@@ -121,62 +177,6 @@ export class EvoteContract extends Contract {
         resp.status = 200;
         resp.message = "OK";
         return JSON.stringify(resp);
-    }
-
-    @Transaction()
-    public async InitDemo(ctx: Context): Promise<void> {
-        if (!(await this._isAdmin(ctx))) {
-            throw new Error("Need Admin Privilege!");
-        }
-        const electionJSON = demoDataJson.election;
-        const candidateJSON = demoDataJson.Candidates;
-
-        const electionID = this._toSha256(JSON.stringify(electionJSON));
-
-        const electionData: Election = {
-            electionID: electionID,
-            ...electionJSON,
-        };
-
-        //Candidates
-        let candidateTemp: any = [];
-        for (const cjs of candidateJSON) {
-            const cjID = this._toSha256(JSON.stringify(cjs));
-            if (await this._assetExist(ctx, cjID)) {
-                throw new Error(
-                    `Asset ${cjs.docType} - ${cjs.candidatesName} exist`
-                );
-            }
-            const candidatesData: Candidates = {
-                candidatesID: cjID,
-                electionID,
-                ...cjs,
-            };
-            candidateTemp.push(JSON.parse(JSON.stringify(candidatesData)));
-            await ctx.stub.putState(
-                cjID,
-                Buffer.from(JSON.stringify(candidatesData))
-            );
-        }
-
-        //electionPut
-        await ctx.stub.putState(
-            electionData.electionID,
-            Buffer.from(JSON.stringify(electionData))
-        );
-
-        //Generate Ballot
-        const participantList = participantDataJson;
-        for (const pvalue of participantList) {
-            const pHash = this._toSha256(JSON.stringify(pvalue));
-            const ballotID = {
-                participantHash: pHash,
-                electionID,
-            };
-
-            const ballotIDHash = this._toSha256(JSON.stringify(ballotID));
-            await this._generateBallot(ctx, ballotIDHash, electionID, pHash);
-        }
     }
 
     @Transaction(false)
@@ -284,6 +284,17 @@ export class EvoteContract extends Contract {
             throw new Error("Need Admin Privilege!");
         }
         let query = { selector: { docType: docType } };
+        const it = ctx.stub.getQueryResult(JSON.stringify(query));
+        return this._getResult(it);
+    }
+
+    @Param("electionId", "string")
+    @Transaction(false)
+    async GetElectionData(ctx: Context, electionId: string): Promise<string> {
+        if (!(await this._isAdmin(ctx))) {
+            throw new Error("Need Admin Privilege!");
+        }
+        let query = { selector: { electionID: electionId } };
         const it = ctx.stub.getQueryResult(JSON.stringify(query));
         return this._getResult(it);
     }

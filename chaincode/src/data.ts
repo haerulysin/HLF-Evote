@@ -63,7 +63,7 @@ export class Candidates {
     candidatesPhotoURL? =
         "https://res.cloudinary.com/mdkruls/image/upload/v1683870802/candidatesPhoto/Default_pfp.svg_noyjas.png";
     @Property("docType", "string")
-    docType = "Candidates";
+    docType = "Candidate";
 }
 
 Object();
